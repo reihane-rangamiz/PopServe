@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/knadh/koanf"
@@ -10,16 +9,16 @@ import (
 )
 
 type Config struct {
-	User     map[string]interface{}   `koanf:"user"`
-	Models   []map[string]interface{} `koanf:"models"`
+	User   map[string]interface{}   `koanf:"user"`
+	Models []map[string]interface{} `koanf:"models"`
+	App    map[string]interface{}   `koanf:"app"`
 	// DataBase map[string]interface{}   `yml:"database"`
-	App      map[string]interface{}   `koanf:"app"`
+
 }
 
 func AppConfig() (*Config, error) {
 	var newConfig = &Config{}
 	newKoanf := LoadConfig()
-	fmt.Print(newKoanf)
 	if err := newKoanf.Unmarshal("config", newConfig); err != nil {
 		return nil, err
 	}
