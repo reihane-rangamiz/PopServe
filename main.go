@@ -1,5 +1,7 @@
 package main
 
+import "PopServe/handlers"
+
 func main() {
-	AppConfig()
+	handlers.AppConfig()
 }
