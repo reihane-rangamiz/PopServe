@@ -1,7 +1,6 @@
 package utils
 
 import (
-	"reflect"
 	"strings"
 )
 
@@ -31,20 +30,56 @@ func InferGoType(value interface{}) string {
 	}
 }
 
-func DetectType(field string, value interface{}) string {
-	switch {
-	case field == "id" || strings.HasSuffix(field, "_id"):
-		return "uint"
-	case field == "created_at" || field == "updated_at" || field == "deleted_at":
-		return "time.Time"
-	case reflect.TypeOf(value).Kind() == reflect.String:
-		return "string"
-	case reflect.TypeOf(value).Kind() == reflect.Bool:
-		return "bool"
-	case reflect.TypeOf(value).Kind() == reflect.Float64:
-		// You can decide whether to round it to int or keep float64
-		return "float64"
+func DetectType(field string, value interface{}) (goType string, skip bool, tag string) {
+	switch val := value.(type) {
+	case bool:
+		if !val {
+			return "", true, ""
+		}
+		// true: infer based on name
+		if field == "created_at" || field == "updated_at" || field == "deleted_at" || strings.HasSuffix(field, "_at") {
+			if field == "created_at" {
+				return "time.Time", false, "autoCreateTime"
+			}
+			if field == "updated_at" {
+				return "time.Time", false, "autoUpdateTime"
+			}
+			if field == "deleted_at" {
+				return "time.Time", false, "autoCreateTime"
+			}
+		}
+		if val {
+			return "string", false, ""
+		}
+
+		return "bool", false, ""
+
+	case string:
+		switch val {
+		case "pk":
+			return "uint", false, "primaryKey"
+		case "fk":
+			return "uint", false, "foreignKey"
+		case "uuid":
+			return "string", false, "type:uuid"
+		case "str", "string":
+			return "string", false, ""
+		case "int":
+			return "int", false, ""
+		case "float":
+			return "float64", false, ""
+		case "jwt":
+			return "string", false, ""
+		default:
+			return "string", false, ""
+		}
+	case float32, float64:
+		return "float64", false, ""
+	case int, int32, int64:
+		return "int", false, ""
+	case uint:
+		return "uint", false, ""
 	default:
-		return "interface{}"
+		return "interface{}", false, ""
 	}
 }

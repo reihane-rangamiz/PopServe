@@ -23,37 +23,51 @@ func AppConfig() (*Config, error) {
 		return nil, err
 	}
 
-	app := GenerateStructsFromMap(newConfig.App)
-	user := GenerateStructsFromMap(newConfig.User)
-	
+	app := GenerateStructsFromMap(newConfig.App, "app")
+	user := GenerateStructsFromMap(newConfig.User, "user")
+
 	for _, model := range newConfig.Models {
-		newModel := GenerateStructsFromMap(model)
-		os.WriteFile("./models/models.go", []byte(newModel), 0644)
+		for modelName, modelfields := range model {
+			newModel := GenerateStructsFromMap(map[string]interface{}{modelName:modelfields}, modelName)
+			os.WriteFile("./models/models.go", []byte(newModel), os.ModeAppend|0644)
+		}
+
+		// newModel := GenerateStructsFromMap(model, "model")
+		// os.WriteFile("./models/models.go", []byte(newModel), 0644)
 
 	}
 	os.WriteFile("./models/models.go", []byte(app), 0644)
 	os.WriteFile("./models/models.go", []byte(user), 0644)
 
-
 	return newConfig, nil
 }
 
-func GenerateStructsFromMap(input map[string]interface{}) string {
+func GenerateStructsFromMap(input map[string]interface{}, structName string) string {
 	var result strings.Builder
 
-	for key, v := range input {
-		fieldsMap, ok := v.(map[string]interface{})
-		if !ok {
+	result.WriteString(fmt.Sprintf("type %s struct {\n", utils.Capitalize(structName)))
+	for fieldName, value := range input {
+		
+		var gormTag string
+		fieldType, skip, tag := utils.DetectType(fieldName, value)
+		if skip {
 			continue
 		}
+		gormTag = tag
+		jsonTag := fmt.Sprintf(`json:"%s"`, fieldName)
 
-		result.WriteString(fmt.Sprintf("type %s struct {\n", utils.Capitalize(key)))
-		for fieldName, fieldValue := range fieldsMap {
-			goType := utils.InferGoType(fieldValue)
-			result.WriteString(fmt.Sprintf("    %s %s `json:\"%s\"`\n", utils.Capitalize(fieldName), goType, fieldName))
+		tags := fmt.Sprintf("`%s", jsonTag)
+		if gormTag != "" {
+			tags += fmt.Sprintf(` gorm:"%s"`, gormTag)
 		}
+		tags += "`"
+
+		result.WriteString(fmt.Sprintf("    %s %s %s\n", utils.Capitalize(fieldName), fieldType, tags))
+
 		result.WriteString("}\n\n")
 	}
 
 	return result.String()
 }
+
+
