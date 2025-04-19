@@ -28,7 +28,7 @@ func AppConfig() (*Config, error) {
 
 	for _, model := range newConfig.Models {
 		for modelName, modelfields := range model {
-			newModel := GenerateStructsFromMap(map[string]interface{}{modelName:modelfields}, modelName)
+			newModel := GenerateStructsFromMap(map[string]interface{}{modelName: modelfields}, modelName)
 			os.WriteFile("./models/models.go", []byte(newModel), os.ModeAppend|0644)
 		}
 
@@ -47,7 +47,7 @@ func GenerateStructsFromMap(input map[string]interface{}, structName string) str
 
 	result.WriteString(fmt.Sprintf("type %s struct {\n", utils.Capitalize(structName)))
 	for fieldName, value := range input {
-		
+
 		var gormTag string
 		fieldType, skip, tag := utils.DetectType(fieldName, value)
 		if skip {
@@ -69,5 +69,3 @@ func GenerateStructsFromMap(input map[string]interface{}, structName string) str
 
 	return result.String()
 }
-
-
