@@ -32,8 +32,7 @@ func AppConfig() (*Config, error) {
 			os.WriteFile("./models/models.go", []byte(newModel), os.ModeAppend|0644)
 		}
 
-		// newModel := GenerateStructsFromMap(model, "model")
-		// os.WriteFile("./models/models.go", []byte(newModel), 0644)
+		
 
 	}
 	os.WriteFile("./models/models.go", []byte(app), 0644)
@@ -41,6 +40,9 @@ func AppConfig() (*Config, error) {
 
 	return newConfig, nil
 }
+
+// newModel := GenerateStructsFromMap(model, "model")
+		// os.WriteFile("./models/models.go", []byte(newModel), 0644)
 
 func GenerateStructsFromMap(input map[string]interface{}, structName string) string {
 	var result strings.Builder
