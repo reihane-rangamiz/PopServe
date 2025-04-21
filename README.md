@@ -7,3 +7,7 @@ With built-in Docker support, REST endpoint generation, authentication, and data
 ---
 
 ## 🚀 Features
+
+- 🛠️ Generate complete Go applications with one command
+- 🧱 Monolithic architecture, production-ready
+- 🔐 Built-in authentication support
