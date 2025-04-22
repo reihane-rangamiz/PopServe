@@ -11,3 +11,9 @@ With built-in Docker support, REST endpoint generation, authentication, and data
 - 🛠️ Generate complete Go applications with one command
 - 🧱 Monolithic architecture, production-ready
 - 🔐 Built-in authentication support
+- 🔌 Auto-generated RESTful API endpoints
+- 🗃️ Database integration (PostgreSQL, MySQL, etc.)
+- 🐳 Docker-ready out of the box
+- ⚙️ Just add a config file and go
+
+---
