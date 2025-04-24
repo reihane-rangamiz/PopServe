@@ -18,5 +18,5 @@ With built-in Docker support, REST endpoint generation, authentication, and data
 
 ---
 
+## 📦 Installation
 
-## 
