@@ -23,3 +23,6 @@ With built-in Docker support, REST endpoint generation, authentication, and data
 ```bash
 go install github.com/your-username/popserve@latest
 ```
+
+
+
