@@ -20,9 +20,15 @@ With built-in Docker support, REST endpoint generation, authentication, and data
 
 ## 📦 Installation
 
+To install and set up PopServe:
+
+Clone the Repository:
+
 ```bash
-go install github.com/your-username/popserve@latest
+git clone https://github.com/reihaneh-rangamiz/PopServe.git
+cd PopServe
+Build the Application:
+
+```bash
+go build -o popserve
 ```
-
-
-
