@@ -32,3 +32,13 @@ Build the Application:
 ```bash
 go build -o popserve
 ```
+
+⚙️ Configuration
+
+PopServe relies on a user-defined configuration file (e.g., YAML or JSON) to generate services. This file should specify:
+
+Service Name: The name of your Go service.
+Database Settings: Type (e.g., PostgreSQL, MySQL), connection strings, and initialization parameters.
+Endpoints: Definitions of RESTful endpoints, including paths, methods, and handler functions.
+Authentication: Details about authentication mechanisms to integrate.
+Docker Settings: Instructions for Dockerfile generation and containerization.
